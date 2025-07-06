@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - Tata Steel</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter for body, Playfair Display for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables - Consistent with other pages */
+        :root {
+            --primary-color: #6A0DAD; /* Deep Purple */
+            --primary-light: #9B59B6; /* Lighter Purple for accents */
+            --secondary-color: #FFC107; /* Amber/Gold for strong contrast */
+            --dark-background: #36013F; /* Darker Purple for nav/footer */
+            --light-background: #F8F4FF; /* Very Light Purple/Lavender for main background */
+            --lighter-background: #EFECF6; /* Slightly darker light purple for sections */
+            --text-color: #333; /* Dark Gray for main text */
+            --white: #FFFFFF;
+            /* Gradients for modern aesthetic */
+            --gradient-purple: linear-gradient(135deg, #6A0DAD 0%, #4A056D 100%);
+            --gradient-dark-purple: linear-gradient(135deg, #36013F 0%, #200125 100%);
+        }
+
+        /* Base Body Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-background);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        /* Heading Font Styling */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-background);
+            font-weight: 700;
+        }
+
+        /* Navbar Styling - Consistent across pages */
+        .navbar {
+            background: var(--gradient-dark-purple);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+        .nav-link {
+            color: var(--white) !important;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+            border-radius: 0.3rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--secondary-color) !important;
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        .nav-item .active {
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Hero Section for Dashboard */
+        .dashboard-hero-section {
+            background: linear-gradient(rgba(54, 1, 63, 0.8), rgba(54, 1, 63, 0.8)), url('https://placehold.co/1920x250/36013F/FFC107/blur-5/grid?text=Employee+Dashboard') no-repeat center center;
+            background-size: cover;
+            color: var(--white);
+            text-align: center;
+            padding: 50px 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .dashboard-hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            color: var(--white);
+        }
+        .dashboard-hero-section p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Card Styling - Consistent across pages */
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 1.2rem 3.5rem rgba(0, 0, 0, 0.18);
+        }
+        .card-header {
+            background: var(--gradient-purple);
+            color: var(--white);
+            font-weight: bold;
+            border-bottom: none;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            padding: 1.5rem;
+            font-size: 1.4rem;
+        }
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Table Styling */
+        .table {
+            --bs-table-bg: var(--white);
+            --bs-table-hover-bg: var(--lighter-background);
+            border-collapse: separate; /* Required for border-radius on table */
+            border-spacing: 0;
+            border-radius: 0.75rem; /* Match card border radius */
+            overflow: hidden; /* Ensures rounded corners are applied */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Light shadow for table */
+        }
+        .table thead th {
+            background-color: var(--primary-light); /* Lighter purple header */
+            color: var(--white);
+            font-weight: 700;
+            border-bottom: none;
+            padding: 1rem 1.25rem;
+        }
+        .table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+        .table tbody tr:hover {
+            cursor: pointer;
+            background-color: var(--lighter-background);
+        }
+        .table tbody td {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid rgba(0,0,0,0.05); /* Subtle row separator */
+        }
+
+        /* Modal Styling */
+        .modal-header {
+            background: var(--gradient-purple);
+            color: var(--white);
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            padding: 1.5rem;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        .modal-content {
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+        .modal-body {
+            padding: 2.5rem;
+        }
+        .modal-footer {
+            border-top: 1px solid var(--lighter-background);
+            padding: 1.5rem 2.5rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-background);
+        }
+        .btn-action {
+            margin-right: 15px; /* More space between action buttons */
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-action.btn-danger {
+            background-color: #DC3545; /* Standard red */
+            border-color: #DC3545;
+        }
+        .btn-action.btn-danger:hover {
+            background-color: #C82333;
+            border-color: #C82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+        .btn-action.btn-success {
+            background-color: #28A745; /* Standard green */
+            border-color: #28A745;
+        }
+        .btn-action.btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        .btn-primary {
+            background: var(--gradient-purple);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-weight: 700;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .status-badge {
+            padding: 0.5em 0.8em; /* Larger padding for badges */
+            border-radius: 0.5rem; /* More rounded */
+            font-size: 0.85em; /* Slightly larger font */
+            font-weight: bold;
+            text-transform: capitalize;
+            color: var(--white);
+            min-width: 120px; /* Ensure consistent width */
+            display: inline-block;
+            text-align: center;
+        }
+        /* Specific badge colors (using standard Bootstrap variations and matching theme where possible) */
+        .status-pending { background-color: var(--secondary-color); color: var(--dark-background); } /* Amber for pending */
+        .status-accepted { background-color: #28a745; } /* Standard success green */
+        .status-declined { background-color: #dc3545; } /* Standard danger red */
+        .status-rescheduled { background-color: #17a2b8; } /* Standard info cyan */
+        .form-control[type="datetime-local"] {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--lighter-background);
+        }
+        .form-control[type="datetime-local"]:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+
+        /* Flash Alert Styling - Consistent across pages */
+        .alert-flash {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            min-width: 350px;
+            text-align: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInOut 5s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* Custom Modal for Alerts (Confirmation/Info) */
+        .custom-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1060; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-modal-content {
+            background-color: var(--white);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--primary-light);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 450px; /* Slightly wider for more content */
+            text-align: center;
+            position: relative;
+            animation: modalOpen 0.3s ease-out forwards;
+        }
+        @keyframes modalOpen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-modal-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .custom-modal-content p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        .custom-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Space between buttons */
+        }
+        .custom-modal-buttons button {
+            padding: 10px 25px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .custom-modal-buttons .confirm-yes {
+            background-color: #DC3545; /* Red for Yes (Decline) */
+            color: white;
+            border: none;
+        }
+        .custom-modal-buttons .confirm-yes:hover {
+            background-color: #C82333;
+        }
+        .custom-modal-buttons .confirm-no {
+            background-color: #6c757d; /* Gray for No (Cancel) */
+            color: white;
+            border: none;
+        }
+        .custom-modal-buttons .confirm-no:hover {
+            background-color: #5a6268;
+        }
+        .custom-modal-content .modal-single-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .custom-modal-content .modal-single-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Footer Styling - Consistent across pages */
+        .footer {
+            background: var(--gradient-dark-purple);
+            color: var(--white);
+            padding: 60px 0 20px;
+            font-size: 0.95rem;
+            margin-top: 50px;
+        }
+        .footer h5 {
+            color: var(--secondary-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+        .footer a {
+            color: var(--lighter-background);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.8rem;
+            margin: 0 12px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: scale(1.2);
+        }
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.15);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .footer .text-center {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .dashboard-hero-section {
+                padding: 40px 15px;
+            }
+            .dashboard-hero-section h1 {
+                font-size: 2.2rem;
+            }
+            .dashboard-hero-section p {
+                font-size: 0.95rem;
+            }
+            .card-body {
+                padding: 1.5rem;
+            }
+            .card-header {
+                font-size: 1.2rem;
+                padding: 1.2rem;
+            }
+            .table thead th, .table tbody td {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            .status-badge {
+                padding: 0.3em 0.5em;
+                font-size: 0.7em;
+            }
+            .btn-action {
+                margin-right: 10px;
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+            .modal-body {
+                padding: 1.5rem;
+            }
+            .modal-footer {
+                padding: 1rem 1.5rem;
+            }
+            .custom-modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar - Consistent with other pages -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <img src="https://placehold.co/40x40/ffffff/6A0DAD?text=TS" alt="Tata Steel Logo" class="me-2 rounded-circle">
+                Tata Steel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('book_appointment') }}">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('track') }}">Track Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('employee_dashboard') }}">Employee Dashboard</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if session.get('employee_logged_in') %}
+                    <li class="nav-item">
+                        <span class="nav-link">Welcome, {{ session['employee_email'] }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('user_logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container - Consistent with other pages -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show alert-flash" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Dashboard Hero Section -->
+    <section class="dashboard-hero-section">
+        <div class="container">
+            <h1 class="display-5">Welcome to Your Employee Dashboard</h1>
+            <p>Manage and process all pending appointment requests efficiently.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Your Appointment Requests
+            </div>
+            <div class="card-body">
+                {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <th>User Name</th>
+                                <th>User Email</th>
+                                <th>Purpose</th>
+                                <th>Current Status</th>
+                                <th>Scheduled Date</th>
+                                <th>Scheduled Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr data-bs-toggle="modal" data-bs-target="#appointmentDetailModal"
+                                data-id="{{ appt.id }}"
+                                data-appointment_id="{{ appt.appointment_id }}"
+                                data-name="{{ appt.name }}"
+                                data-email="{{ appt.email }}"
+                                data-aadhar="{{ appt.aadhar }}"
+                                data-phone_number="{{ appt.phone_number }}"
+                                data-phone_last4="{{ appt.phone_last4 }}"
+                                data-id_type="{{ appt.id_type }}"
+                                data-purpose="{{ appt.purpose }}"
+                                data-status="{{ appt.status }}"
+                                data-date="{{ appt.date if appt.date else '' }}"
+                                data-time="{{ appt.time if appt.time else '' }}"
+                                data-organiser_personal_number="{{ appt.organiser_personal_number if appt.organiser_personal_number else '' }}"
+                                data-organiser_email_id="{{ appt.organiser_email_id if appt.organiser_email_id else '' }}">
+                                <td>{{ appt.appointment_id }}</td>
+                                <td>{{ appt.name }}</td>
+                                <td>{{ appt.email }}</td>
+                                <td>{{ appt.purpose }}</td>
+                                <td><span class="status-badge status-{{ appt.status | lower }}">{{ appt.status }}</span></td>
+                                <td>{{ appt.date if appt.date else 'N/A' }}</td>
+                                <td>{{ appt.time if appt.time else 'N/A' }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No appointment requests found for your email ID ({{ session['employee_email'] if session.get('employee_email') else 'N/A' }}).</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Detail Modal -->
+    <div class="modal fade" id="appointmentDetailModal" tabindex="-1" aria-labelledby="appointmentDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="appointmentDetailModalLabel">Appointment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Appointment ID:</strong> <span id="modal-appointment-id"></span></p>
+                            <p><strong>User Name:</strong> <span id="modal-user-name"></span></p>
+                            <p><strong>User Email:</strong> <span id="modal-user-email"></span></p>
+                            <p><strong>Phone Number:</strong> <span id="modal-phone-number"></span> (Last 4: <span id="modal-phone-last4"></span>)</p>
+                            <p><strong>ID Type:</strong> <span id="modal-id-type"></span></p>
+                            <p><strong>ID Number:</strong> <span id="modal-aadhar"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Purpose:</strong> <span id="modal-purpose"></span></p>
+                            <p><strong>Current Status:</strong> <span id="modal-status" class="status-badge"></span></p>
+                            <p><strong>Scheduled Date:</strong> <span id="modal-date">N/A</span></p>
+                            <p><strong>Scheduled Time:</strong> <span id="modal-time">N/A</span></p>
+                            <p><strong>Organizer Personal No:</strong> <span id="modal-organiser-personal-number"></span></p>
+                            <p><strong>Organizer Email:</strong> <span id="modal-organiser-email-id"></span></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button type="button" class="btn btn-danger btn-action" id="declineBtn">Decline</button>
+                        <button type="button" class="btn btn-success btn-action" id="acceptBtn">Accept</button>
+                    </div>
+                    <div id="datetimePickerContainer" class="mt-4" style="display: none;">
+                        <div class="mb-3">
+                            <label for="newAppointmentDatetime" class="form-label">Select Date and Time for Acceptance:</label>
+                            <input type="datetime-local" class="form-control" id="newAppointmentDatetime">
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" id="confirmAcceptBtn">Confirm Acceptance</button>
+                    </div>
+                    <div id="modalMessage" class="mt-3" style="display: none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Alerts (Confirmation/Info) -->
+    <div id="customAlertModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <h4 id="customModalTitle"></h4>
+            <p id="customModalMessage"></p>
+            <div class="custom-modal-buttons">
+                <button type="button" class="confirm-yes" id="customModalConfirmYes" style="display: none;">Yes</button>
+                <button type="button" class="confirm-no" id="customModalConfirmNo" style="display: none;">No</button>
+                <button type="button" class="modal-single-btn" id="customModalOk" style="display: none;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Consistent with other pages -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Tata Steel Appointment Portal</h5>
+                    <p>Your efficient gateway to scheduling and managing appointments with Tata Steel.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('book_appointment') }}">Book Appointment</a></li>
+                        <li><a href="{{ url_for('track') }}">Track Appointment</a></li>
+                        <li><a href="{{ url_for('employee_login') }}">Employee Login</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <address>
+                        123 Main Street<br>
+                        Steel City, ST 12345<br>
+                        Email: amazTanweer@gmail.com<br>
+                        Phone: +91-85213419
+                    </address>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.15);">
+            <div class="text-center">
+                <p>&copy; 2025 MD AMAZ TANWEER. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const appointmentDetailModal = document.getElementById('appointmentDetailModal');
+        const declineBtn = document.getElementById('declineBtn');
+        const acceptBtn = document.getElementById('acceptBtn');
+        const datetimePickerContainer = document.getElementById('datetimePickerContainer');
+        const newAppointmentDatetime = document.getElementById('newAppointmentDatetime');
+        const confirmAcceptBtn = document.getElementById('confirmAcceptBtn');
+        const modalMessageDiv = document.getElementById('modalMessage');
+
+        let currentAppointmentId = null; // To store the ID of the appointment being viewed
+        let confirmationCallback = null; // Callback for custom confirm modal
+
+        // Custom alert and confirm functions
+        function showCustomAlert(title, message, isConfirm = false, callback = null) {
+            document.getElementById('customModalTitle').textContent = title;
+            document.getElementById('customModalMessage').textContent = message;
+            
+            const confirmYesBtn = document.getElementById('customModalConfirmYes');
+            const confirmNoBtn = document.getElementById('customModalConfirmNo');
+            const okBtn = document.getElementById('customModalOk');
+
+            if (isConfirm) {
+                confirmYesBtn.style.display = 'inline-block';
+                confirmNoBtn.style.display = 'inline-block';
+                okBtn.style.display = 'none';
+                confirmationCallback = callback; // Store callback
+            } else {
+                confirmYesBtn.style.display = 'none';
+                confirmNoBtn.style.display = 'none';
+                okBtn.style.display = 'inline-block';
+            }
+            document.getElementById('customAlertModal').style.display = 'flex';
+        }
+
+        function closeCustomModal() {
+            document.getElementById('customAlertModal').style.display = 'none';
+            // Reset callback
+            confirmationCallback = null;
+        }
+
+        // Event listeners for custom modal buttons
+        document.getElementById('customModalConfirmYes').addEventListener('click', () => {
+            closeCustomModal();
+            if (confirmationCallback) {
+                confirmationCallback(true);
+            }
+        });
+
+        document.getElementById('customModalConfirmNo').addEventListener('click', () => {
+            closeCustomModal();
+            if (confirmationCallback) {
+                confirmationCallback(false);
+            }
+        });
+
+        document.getElementById('customModalOk').addEventListener('click', () => {
+            closeCustomModal();
+        });
+
+
+        appointmentDetailModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+            
+            // Extract info from data-* attributes
+            currentAppointmentId = button.getAttribute('data-id');
+            const appointment_id = button.getAttribute('data-appointment_id');
+            const name = button.getAttribute('data-name');
+            const email = button.getAttribute('data-email');
+            const aadhar = button.getAttribute('data-aadhar');
+            const phone_number = button.getAttribute('data-phone_number');
+            const phone_last4 = button.getAttribute('data-phone_last4');
+            const id_type = button.getAttribute('data-id_type');
+            const purpose = button.getAttribute('data-purpose');
+            const status = button.getAttribute('data-status');
+            const date = button.getAttribute('data-date');
+            const time = button.getAttribute('data-time');
+            const organiser_personal_number = button.getAttribute('data-organiser_personal_number');
+            const organiser_email_id = button.getAttribute('data-organiser_email_id');
+
+            // Update the modal's content
+            document.getElementById('modal-appointment-id').textContent = appointment_id;
+            document.getElementById('modal-user-name').textContent = name;
+            document.getElementById('modal-user-email').textContent = email;
+            document.getElementById('modal-phone-number').textContent = phone_number;
+            document.getElementById('modal-phone-last4').textContent = phone_last4;
+            document.getElementById('modal-id-type').textContent = id_type;
+            document.getElementById('modal-aadhar').textContent = aadhar;
+            document.getElementById('modal-purpose').textContent = purpose;
+            
+            const modalStatusSpan = document.getElementById('modal-status');
+            modalStatusSpan.textContent = status;
+            modalStatusSpan.className = `status-badge status-${status.toLowerCase()}`;
+
+            document.getElementById('modal-date').textContent = date || 'N/A';
+            document.getElementById('modal-time').textContent = time || 'N/A';
+            document.getElementById('modal-organiser-personal-number').textContent = organiser_personal_number || 'N/A';
+            document.getElementById('modal-organiser-email-id').textContent = organiser_email_id || 'N/A';
+
+            // Reset UI for next time
+            datetimePickerContainer.style.display = 'none';
+            newAppointmentDatetime.value = '';
+            modalMessageDiv.style.display = 'none';
+            modalMessageDiv.className = '';
+            declineBtn.style.display = 'inline-block'; // Show decline button
+            acceptBtn.style.display = 'inline-block';  // Show accept button
+
+            // Disable buttons if appointment is already Accepted/Declined/Rescheduled
+            if (status.toLowerCase() === 'accepted' || status.toLowerCase() === 'declined' || status.toLowerCase() === 'rescheduled') {
+                declineBtn.style.display = 'none';
+                acceptBtn.style.display = 'none';
+                modalMessageDiv.style.display = 'block';
+                modalMessageDiv.className = 'alert alert-info';
+                modalMessageDiv.textContent = `This appointment is already ${status}.`;
+            }
+        });
+
+        acceptBtn.addEventListener('click', () => {
+            datetimePickerContainer.style.display = 'block';
+            acceptBtn.style.display = 'none'; // Hide accept button when date picker is shown
+            declineBtn.style.display = 'none'; // Also hide decline for now
+            modalMessageDiv.style.display = 'none'; // Hide any previous messages
+        });
+
+        confirmAcceptBtn.addEventListener('click', async () => {
+            const selectedDatetime = newAppointmentDatetime.value;
+            if (!selectedDatetime) {
+                displayModalMessage('Please select a date and time.', 'alert-danger');
+                return;
+            }
+
+            // Send AJAX request to update status to Accepted
+            const response = await fetch('/update_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    appointment_id: currentAppointmentId,
+                    action: 'accept',
+                    new_datetime: selectedDatetime
+                })
+            });
+
+            const data = await response.json();
+            if (data.status === 'success') {
+                displayModalMessage(data.message, 'alert-success');
+                // Optionally, update the table row directly or reload the page
+                setTimeout(() => {
+                    location.reload(); // Reload dashboard to show updated status
+                }, 1500);
+            } else {
+                displayModalMessage(data.message, 'alert-danger');
+            }
+        });
+
+        declineBtn.addEventListener('click', () => {
+            showCustomAlert('Confirm Decline', 'Are you sure you want to decline this appointment?', true, async (confirmed) => {
+                if (confirmed) {
+                    // Send AJAX request to update status to Declined
+                    const response = await fetch('/update_status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            appointment_id: currentAppointmentId,
+                            action: 'decline'
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        displayModalMessage(data.message, 'alert-success');
+                        setTimeout(() => {
+                            location.reload(); // Reload dashboard to show updated status
+                        }, 1500);
+                    } else {
+                        displayModalMessage(data.message, 'alert-danger');
+                    }
+                }
+            });
+        });
+
+        function displayModalMessage(message, className) {
+            modalMessageDiv.textContent = message;
+            modalMessageDiv.className = `alert ${className}`;
+            modalMessageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

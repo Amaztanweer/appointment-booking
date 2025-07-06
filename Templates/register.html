@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Tata Steel</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter for body, Playfair Display for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables - Consistent with other pages */
+        :root {
+            --primary-color: #6A0DAD; /* Deep Purple */
+            --primary-light: #9B59B6; /* Lighter Purple for accents */
+            --secondary-color: #FFC107; /* Amber/Gold for strong contrast */
+            --dark-background: #36013F; /* Darker Purple for nav/footer */
+            --light-background: #F8F4FF; /* Very Light Purple/Lavender for main background */
+            --lighter-background: #EFECF6; /* Slightly darker light purple for sections */
+            --text-color: #333; /* Dark Gray for main text */
+            --white: #FFFFFF;
+            /* Gradients for modern aesthetic */
+            --gradient-purple: linear-gradient(135deg, #6A0DAD 0%, #4A056D 100%);
+            --gradient-dark-purple: linear-gradient(135deg, #36013F 0%, #200125 100%);
+        }
+
+        /* Base Body Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-background);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        /* Heading Font Styling */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-background);
+            font-weight: 700;
+        }
+
+        /* Navbar Styling - Consistent across pages */
+        .navbar {
+            background: var(--gradient-dark-purple);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+        .nav-link {
+            color: var(--white) !important;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+            border-radius: 0.3rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--secondary-color) !important;
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        .nav-item .active {
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Hero Section for Auth Pages */
+        .auth-hero-section {
+            background: linear-gradient(rgba(54, 1, 63, 0.8), rgba(54, 1, 63, 0.8)), url('https://placehold.co/1920x200/36013F/FFC107/blur-5/register?text=Join+Us') no-repeat center center;
+            background-size: cover;
+            color: var(--white);
+            text-align: center;
+            padding: 40px 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .auth-hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            color: var(--white);
+        }
+        .auth-hero-section p {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Card Styling - Consistent across pages */
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+            margin-top: 25px;
+            margin-bottom: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 1.2rem 3.5rem rgba(0, 0, 0, 0.18);
+        }
+        .card-header {
+            background: var(--gradient-purple);
+            color: var(--white);
+            font-weight: bold;
+            border-bottom: none;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            padding: 1.5rem;
+            font-size: 1.4rem;
+        }
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Form Control Styling */
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-background);
+            margin-bottom: 0.5rem;
+        }
+        .form-control, .form-select {
+            border: 1px solid var(--lighter-background);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+            outline: none;
+        }
+
+        /* Buttons Styling - Consistent across pages */
+        .btn-primary {
+            background: var(--gradient-purple);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-weight: 700;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .btn-outline-secondary {
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            font-weight: 600;
+        }
+        .btn-outline-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.3);
+        }
+
+        /* Flash Alert Styling - Consistent across pages */
+        .alert-flash {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            min-width: 350px;
+            text-align: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInOut 5s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* Custom Modal for Alerts */
+        .custom-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1060; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .custom-modal-content {
+            background-color: var(--white);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--primary-light);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            animation: modalOpen 0.3s ease-out forwards;
+        }
+        @keyframes modalOpen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-modal-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .custom-modal-content p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        .custom-modal-content .modal-close-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .custom-modal-content .modal-close-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Footer Styling - Consistent across pages */
+        .footer {
+            background: var(--gradient-dark-purple);
+            color: var(--white);
+            padding: 60px 0 20px;
+            font-size: 0.95rem;
+            margin-top: 50px;
+        }
+        .footer h5 {
+            color: var(--secondary-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+        .footer a {
+            color: var(--lighter-background);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.8rem;
+            margin: 0 12px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: scale(1.2);
+        }
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.15);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .footer .text-center {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Specific Link Styling for Login/Register pages */
+        .link {
+            margin-top: 20px;
+            display: block;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+        .link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .link a:hover {
+            text-decoration: underline;
+            color: var(--primary-light);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .auth-hero-section {
+                padding: 30px 15px;
+                margin-bottom: 30px;
+            }
+            .auth-hero-section h1 {
+                font-size: 2rem;
+            }
+            .auth-hero-section p {
+                font-size: 0.9rem;
+            }
+            .card-body {
+                padding: 1.5rem;
+            }
+            .card-header {
+                font-size: 1.2rem;
+                padding: 1.2rem;
+            }
+            .btn-primary {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar - Consistent with other pages -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <img src="https://placehold.co/40x40/ffffff/6A0DAD?text=TS" alt="Tata Steel Logo" class="me-2 rounded-circle">
+                Tata Steel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('book_appointment') }}">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('track') }}">Track Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('employee_login') }}">Employee Login</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if session.get('user') %}
+                    <li class="nav-item">
+                        <span class="nav-link">Welcome, {{ session['user'] }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('user_logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2 active" aria-current="page" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container - Consistent with other pages -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show alert-flash" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Auth Hero Section for Register Page -->
+    <section class="auth-hero-section">
+        <div class="container">
+            <h1 class="display-6">Join the Tata Steel Community</h1>
+            <p>Register for an account to book and manage your appointments effortlessly.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header text-center">
+                        User Registration
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/register" onsubmit="return validateForm();">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" value="{{ email or '' }}">
+                            </div>
+
+                            <div class="d-grid mt-4 mb-4">
+                                <button type="submit" name="send_otp" class="btn btn-primary">Send OTP</button>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="otp" class="form-label">OTP</label>
+                                <input type="text" class="form-control" name="otp" id="otp" placeholder="Enter the OTP received on email">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Create password">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm password">
+                            </div>
+
+                            <div class="d-grid mt-4">
+                                <button type="submit" name="register_user" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+                        <div class="link text-center">
+                            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Alerts (from employ_otp.html) -->
+    <div id="customAlertModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <h4 id="customModalTitle"></h4>
+            <p id="customModalMessage"></p>
+            <button type="button" class="modal-close-btn" onclick="closeCustomModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- Footer - Consistent with other pages -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Tata Steel Appointment Portal</h5>
+                    <p>Your efficient gateway to scheduling and managing appointments with Tata Steel.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('book_appointment') }}">Book Appointment</a></li>
+                        <li><a href="{{ url_for('track') }}">Track Appointment</a></li>
+                        <li><a href="{{ url_for('employee_login') }}">Employee Login</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <address>
+                        123 Main Street<br>
+                        Steel City, ST 12345<br>
+                        Email: amaztanweer@gmail.com<br>
+                        Phone: +91-85213419
+                    </address>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.15);">
+            <div class="text-center">
+                <p>&copy; 2025 MD AMAZ TANWEER. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Custom alert functions (consistent with employ_otp.html)
+        function showCustomAlert(title, message) {
+            document.getElementById('customModalTitle').textContent = title;
+            document.getElementById('customModalMessage').textContent = message;
+            document.getElementById('customAlertModal').style.display = 'flex';
+        }
+
+        function closeCustomModal() {
+            document.getElementById('customAlertModal').style.display = 'none';
+        }
+
+        function validateForm() {
+            const sendOtpClicked = document.activeElement.name === "send_otp";
+
+            const email = document.getElementById("email").value.trim();
+            const otp = document.getElementById("otp").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const confirmPassword = document.getElementById("confirm_password").value.trim();
+
+            if (sendOtpClicked) {
+                if (!email) {
+                    showCustomAlert("Input Required", "Please enter your email.");
+                    return false;
+                }
+                return true;
+            } else {
+                if (!otp || !password || !confirmPassword) {
+                    showCustomAlert("Input Required", "Please fill all the fields to register.");
+                    return false;
+                }
+                if (password !== confirmPassword) {
+                    showCustomAlert("Password Mismatch", "Passwords do not match.");
+                    return false;
+                }
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

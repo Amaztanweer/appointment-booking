@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Tata Steel</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter for body, Playfair Display for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons (if any are used in the future, good to have) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables - Consistent with index.html */
+        :root {
+            --primary-color: #6A0DAD; /* Deep Purple */
+            --primary-light: #9B59B6; /* Lighter Purple for accents */
+            --secondary-color: #FFC107; /* Amber/Gold for strong contrast */
+            --dark-background: #36013F; /* Darker Purple for nav/footer */
+            --light-background: #F8F4FF; /* Very Light Purple/Lavender for main background */
+            --lighter-background: #EFECF6; /* Slightly darker light purple for sections */
+            --text-color: #333; /* Dark Gray for main text */
+            --white: #FFFFFF;
+            /* Gradients for modern aesthetic */
+            --gradient-purple: linear-gradient(135deg, #6A0DAD 0%, #4A056D 100%);
+            --gradient-dark-purple: linear-gradient(135deg, #36013F 0%, #200125 100%);
+        }
+
+        /* Base Body Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-background);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        /* Heading Font Styling */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark-background);
+            font-weight: 700;
+        }
+
+        /* Navbar Styling - Consistent with index.html */
+        .navbar {
+            background: var(--gradient-dark-purple);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            border: 2px solid var(--secondary-color);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+        .nav-link {
+            color: var(--white) !important;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+            border-radius: 0.3rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--secondary-color) !important;
+            background-color: rgba(255, 193, 7, 0.1);
+        }
+        .nav-item .active {
+            border-bottom: 2px solid var(--secondary-color); /* Highlight active link */
+            padding-bottom: 0.5rem;
+        }
+
+
+        /* Hero Section for Booking Page */
+        .booking-hero-section {
+            background: linear-gradient(rgba(54, 1, 63, 0.8), rgba(54, 1, 63, 0.8)), url('https://placehold.co/1920x300/36013F/FFC107/blur-5/mosaic?text=Book+Your+Visit') no-repeat center center;
+            background-size: cover;
+            color: var(--white);
+            text-align: center;
+            padding: 60px 15px; /* Smaller padding than homepage hero */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px; /* Space before the form */
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .booking-hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            color: var(--white); /* Ensure heading is white on dark background */
+        }
+        .booking-hero-section p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Card Styling - Consistent with index.html */
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+            margin-top: 25px; /* Slightly less margin than main page */
+            margin-bottom: 25px; /* Added for spacing */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.005); /* Less pronounced lift for forms */
+            box-shadow: 0 1.2rem 3.5rem rgba(0, 0, 0, 0.18);
+        }
+        .card-header {
+            background: var(--gradient-purple);
+            color: var(--white);
+            font-weight: bold;
+            border-bottom: none;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            padding: 1.5rem;
+            font-size: 1.4rem; /* Slightly smaller header font for form steps */
+        }
+        .card-body {
+            padding: 2.5rem; /* More internal padding */
+        }
+
+        /* Form Control Styling */
+        .form-label {
+            font-weight: 600; /* Bolder labels */
+            color: var(--dark-background);
+            margin-bottom: 0.5rem;
+        }
+        .form-control, .form-select {
+            border: 1px solid var(--lighter-background);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-light); /* Lighter purple focus */
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25); /* Purple glow on focus */
+            outline: none;
+        }
+        .input-group .btn-outline-secondary {
+            border-radius: 0.5rem; /* Match input border-radius */
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        .input-group .btn-outline-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        /* Primary Submit Button Styling - Consistent with index.html */
+        .btn-primary {
+            background: var(--gradient-purple);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-weight: 700;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+            background: var(--secondary-color); /* Solid amber on hover for a strong contrast */
+            border-color: var(--secondary-color);
+        }
+
+        /* Utility Text Styling */
+        .text-muted-small {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        .form-text.text-success {
+            color: #28a745 !important; /* Standard Bootstrap green */
+            font-weight: 600;
+        }
+        .form-text.text-danger {
+            color: #dc3545 !important; /* Standard Bootstrap red */
+            font-weight: 600;
+        }
+
+        /* Flash Alert Styling - Consistent with index.html */
+        .alert-flash {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            min-width: 350px;
+            text-align: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInOut 5s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* Footer Styling - Consistent with index.html */
+        .footer {
+            background: var(--gradient-dark-purple);
+            color: var(--white);
+            padding: 60px 0 20px;
+            font-size: 0.95rem;
+        }
+        .footer h5 {
+            color: var(--secondary-color);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+        .footer a {
+            color: var(--lighter-background);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.8rem;
+            margin: 0 12px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: scale(1.2);
+        }
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.15);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .footer .text-center {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .booking-hero-section {
+                padding: 40px 15px;
+            }
+            .booking-hero-section h1 {
+                font-size: 2.2rem;
+            }
+            .booking-hero-section p {
+                font-size: 0.95rem;
+            }
+            .card-body {
+                padding: 1.5rem;
+            }
+            .card-header {
+                font-size: 1.2rem;
+                padding: 1.2rem;
+            }
+            .btn-primary, .input-group .btn-outline-secondary {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar - Identical to index.html -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <img src="https://placehold.co/40x40/ffffff/6A0DAD?text=TS" alt="Tata Steel Logo" class="me-2 rounded-circle">
+                Tata Steel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('book_appointment') }}">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('track') }}">Track Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('employee_login') }}">Employee Login</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if session.get('user') %}
+                    <li class="nav-item">
+                        <span class="nav-link">Welcome, {{ session['user'] }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('user_logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm ms-2" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show alert-flash" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Booking Hero Section -->
+    <section class="booking-hero-section">
+        <div class="container">
+            <h1 class="display-5">Schedule Your Visit with Ease</h1>
+            <p class="lead">Fill out the details below to request your appointment at Tata Steel. Your journey to seamless interaction begins here.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <form method="POST" action="{{ url_for('book_appointment') }}" onsubmit="return validateForm()">
+            <div class="card">
+                <div class="card-header">
+                    1. Personal Details
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone_number" name="phone_number" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    2. ID Proof
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="id_type" class="form-label">Select ID Type</label>
+                        <select class="form-select" id="id_type" name="id_type" required>
+                            <option value="">-- Select --</option>
+                            <option value="Aadhar">Aadhar Card</option>
+                            <option value="Pancard">PAN Card</option>
+                            <option value="Passport">Passport</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_number" class="form-label">ID Number</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="id_number" name="id_number" required>
+                            <button class="btn btn-outline-secondary" type="button" id="verifyIdBtn">Verify ID</button>
+                        </div>
+                        <small id="idVerificationStatus" class="form-text text-muted-small"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    3. Meeting Details
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="purpose" class="form-label">Purpose of Meeting</label>
+                        <textarea class="form-control" id="purpose" name="purpose" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-block">Have you ever met before?</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="met_before" id="met_before_yes" value="yes" required>
+                            <label class="form-check-label" for="met_before_yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="met_before" id="met_before_no" value="no" required>
+                            <label class="form-check-label" for="met_before_no">No</label>
+                        </div>
+                    </div>
+                    <!-- Field for desired appointment date and time -->
+                    <div class="mb-3">
+                        <label for="desired_datetime" class="form-label">Desired Appointment Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="desired_datetime" name="desired_datetime" required>
+                    </div>
+
+                    <hr> <h5 class="mb-3">Organiser Details (Optional)</h5>
+                    <p class="text-muted-small">Enter Organiser's Personal Number to auto-fill their details.</p>
+                    <div class="mb-3">
+                        <label for="organiser_personal_no" class="form-label">Organiser Personal Number</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="organiser_personal_no" name="organiser_personal_no_display">
+                            <button class="btn btn-outline-secondary" type="button" id="getOrganiserDetailsBtn">Get Details</button>
+                        </div>
+                        <small id="organiserStatus" class="form-text text-muted-small"></small>
+                    </div>
+
+                    <!-- Hidden fields to store fetched organiser details for form submission -->
+                    <input type="hidden" id="organiser_personal_no_hidden" name="organiser_personal_no_hidden">
+                    <input type="hidden" id="organiser_name_hidden" name="organiser_name_hidden">
+                    <input type="hidden" id="organiser_department_hidden" name="organiser_department_hidden">
+                    <input type="hidden" id="organiser_designation_hidden" name="organiser_designation_hidden">
+                    <input type="hidden" id="organiser_contact_no_hidden" name="organiser_contact_no_hidden">
+                    <input type="hidden" id="organiser_email_hidden" name="organiser_email_hidden">
+
+                    <div class="mb-3">
+                        <label for="organiser_name" class="form-label">Organiser Name</label>
+                        <input type="text" class="form-control" id="organiser_name" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="organiser_department" class="form-label">Department</label>
+                        <input type="text" class="form-control" id="organiser_department" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="organiser_designation" class="form-label">Designation</label>
+                        <input type="text" class="form-control" id="organiser_designation" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="organiser_contact_no" class="form-label">Contact Number</label>
+                        <input type="text" class="form-control" id="organiser_contact_no" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="organiser_email" class="form-label">Email ID</label>
+                        <input type="email" class="form-control" id="organiser_email" readonly>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="phone_last4" class="form-label">Phone Last 4 Digits</label>
+                        <input type="text" class="form-control" id="phone_last4" name="phone_last4" maxlength="4" pattern="\d{4}" required
+                         placeholder="Enter last 4 digits" title="Please enter exactly 4 digits">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 col-md-6 mx-auto mt-5 mb-5">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Appointment Request</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer - Identical to index.html -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Tata Steel Appointment Portal</h5>
+                    <p>Your efficient gateway to scheduling and managing appointments with Tata Steel.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('book_appointment') }}">Book Appointment</a></li>
+                        <li><a href="{{ url_for('track') }}">Track Appointment</a></li>
+                        <li><a href="{{ url_for('employee_login') }}">Employee Login</a></li>
+                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <address>
+                        123 Main Street<br>
+                        Steel City, ST 12345<br>
+                        Email: amaztanweer@gmail.com<br>
+                        Phone: +91-85213419
+                    </address>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.15);">
+            <div class="text-center">
+                <p>&copy; 2025 MD AMAZ TANWEER. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let isIdVerified = false; // Flag to track ID verification
+
+        document.getElementById('verifyIdBtn').addEventListener('click', async () => {
+            const idType = document.getElementById('id_type').value;
+            const idNumber = document.getElementById('id_number').value;
+            const statusDiv = document.getElementById('idVerificationStatus');
+
+            if (!idType) {
+                statusDiv.textContent = 'Please select an ID type.';
+                statusDiv.className = 'form-text text-danger';
+                return;
+            }
+            if (!idNumber) {
+                statusDiv.textContent = 'Please enter the ID number.';
+                statusDiv.className = 'form-text text-danger';
+                return;
+            }
+
+            statusDiv.textContent = 'Verifying ID...';
+            statusDiv.className = 'form-text text-info';
+            isIdVerified = false; // Reset flag
+
+            try {
+                const response = await fetch('{{ url_for("verify_id_proof") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_type: idType, id_number: idNumber })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusDiv.textContent = data.message;
+                    statusDiv.className = 'form-text text-success';
+                    isIdVerified = true;
+                } else {
+                    statusDiv.textContent = data.message || 'ID verification failed.';
+                    statusDiv.className = 'form-text text-danger';
+                    isIdVerified = false;
+                }
+            } catch (error) {
+                console.error('Error during ID verification:', error);
+                statusDiv.textContent = 'An error occurred during ID verification.';
+                statusDiv.className = 'form-text text-danger';
+                isIdVerified = false;
+            }
+        });
+
+        document.getElementById('getOrganiserDetailsBtn').addEventListener('click', async () => {
+            const personalNumber = document.getElementById('organiser_personal_no').value;
+            const statusDiv = document.getElementById('organiserStatus');
+
+            // Clear previous details
+            document.getElementById('organiser_name').value = '';
+            document.getElementById('organiser_department').value = '';
+            document.getElementById('organiser_designation').value = '';
+            document.getElementById('organiser_contact_no').value = '';
+            document.getElementById('organiser_email').value = '';
+
+            // Clear hidden fields
+            document.getElementById('organiser_personal_no_hidden').value = '';
+            document.getElementById('organiser_name_hidden').value = '';
+            document.getElementById('organiser_department_hidden').value = '';
+            document.getElementById('organiser_designation_hidden').value = '';
+            document.getElementById('organiser_contact_no_hidden').value = '';
+            document.getElementById('organiser_email_hidden').value = '';
+
+
+            if (!personalNumber) {
+                statusDiv.textContent = 'Please enter an Organiser Personal Number.';
+                statusDiv.className = 'form-text text-danger';
+                return;
+            }
+
+            statusDiv.textContent = 'Fetching details...';
+            statusDiv.className = 'form-text text-info';
+
+            try {
+                const response = await fetch('{{ url_for("get_organiser_details") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ personal_number: personalNumber })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('organiser_name').value = data.name;
+                    document.getElementById('organiser_department').value = data.department;
+                    document.getElementById('organiser_designation').value = data.designation;
+                    document.getElementById('organiser_contact_no').value = data.contact_no;
+                    document.getElementById('organiser_email').value = data.email;
+
+                    // Populate hidden fields for form submission
+                    document.getElementById('organiser_personal_no_hidden').value = personalNumber;
+                    document.getElementById('organiser_name_hidden').value = data.name;
+                    document.getElementById('organiser_department_hidden').value = data.department;
+                    document.getElementById('organiser_designation_hidden').value = data.designation;
+                    document.getElementById('organiser_contact_no_hidden').value = data.contact_no;
+                    document.getElementById('organiser_email_hidden').value = data.email;
+
+                    statusDiv.textContent = 'Organiser details fetched successfully.';
+                    statusDiv.className = 'form-text text-success';
+                } else {
+                    statusDiv.textContent = data.message || 'Failed to fetch organiser details.';
+                    statusDiv.className = 'form-text text-danger';
+                }
+            } catch (error) {
+                console.error('Error fetching organiser details:', error);
+                statusDiv.textContent = 'An error occurred while fetching organiser details.';
+                statusDiv.className = 'form-text text-danger';
+            }
+        });
+
+        function validateForm() {
+            if (!isIdVerified) {
+                const statusDiv = document.getElementById('idVerificationStatus');
+                statusDiv.textContent = 'Please verify your ID before submitting the appointment request.';
+                statusDiv.className = 'form-text text-danger';
+                document.getElementById('id_number').focus();
+                return false;
+            }
+            return true;
+        }
+
+        // Add event listener to clear ID verification status if ID type or number changes
+        document.getElementById('id_type').addEventListener('change', () => {
+            isIdVerified = false;
+            document.getElementById('idVerificationStatus').textContent = '';
+        });
+        document.getElementById('id_number').addEventListener('input', () => {
+            isIdVerified = false;
+            document.getElementById('idVerificationStatus').textContent = '';
+        });
+    </script>
+</body>
+</html>
