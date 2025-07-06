@@ -1,4 +1,4 @@
-# Tata Steel Appointment Booking System
+# Appointment Booking System
 
 A Flask-based web app to allow users to book appointments with employees and manage those requests securely.
 
